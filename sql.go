@@ -167,7 +167,7 @@ func getRaces(db *sql.DB, name string) ([]Races, error) {
 		race := Races{}
 		err = result.Scan(
 			&race.ID,
-			&race.Description)
+			&race.Name)
 		if err != nil {
 			fmt.Println(err)
 			return nil, err

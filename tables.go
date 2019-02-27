@@ -72,6 +72,6 @@ type Proficiencies struct {
 
 //Races struct
 type Races struct {
-	ID          int    `json:"id,omitempty"`
-	Description string `json:"description,omitempty"`
+	ID   int    `json:"id,omitempty"`
+	Name string `json:"name,omitempty"`
 }
