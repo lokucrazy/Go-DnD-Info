@@ -2,7 +2,7 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
+	"log"
 	"net/http"
 	"strings"
 
@@ -22,7 +22,6 @@ func main() {
 				w.WriteHeader(http.StatusOK)
 				err = j.Encode(response)
 			}
-			fmt.Println(err)
 		})
 		r.Get("/{table}/{name}", func(w http.ResponseWriter, r *http.Request) {
 			j := json.NewEncoder(w)
@@ -38,9 +37,5 @@ func main() {
 		})
 	})
 
-	fmt.Println("listening on localhost:8081")
-	err := http.ListenAndServe(":8081", r)
-	if err != nil {
-		fmt.Println(err)
-	}
+	log.Fatal(http.ListenAndServe(":8081", r))
 }
