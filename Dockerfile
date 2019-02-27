@@ -6,5 +6,5 @@ WORKDIR /app
 RUN go get -v github.com/mattn/go-sqlite3
 RUN go get -v github.com/go-chi/chi
 RUN go build -o main .
-EXPOSE 8081
+EXPOSE 8080
 CMD ["./main"]
