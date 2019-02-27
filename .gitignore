@@ -1,5 +1,6 @@
-# Intellij and Goland idea folder
+# .idea folder and Mac .DS_Store
 .idea/*
+.DS_Store
 
 # Binaries for programs and plugins
 *.exe
