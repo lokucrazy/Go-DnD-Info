@@ -14,6 +14,7 @@ func get(table, name string) ([]byte, error) {
 		return nil, err
 	}
 	defer db.Close()
+
 	var list interface{}
 	switch table {
 	case "spells":
@@ -44,10 +45,12 @@ func getSpells(db *sql.DB, name string) ([]Spells, error) {
 	if name != "" {
 		query += "WHERE spells.name = ?"
 	}
+
 	result, err := db.Query(query, name)
 	if err != nil {
 		return nil, err
 	}
+
 	for result.Next() {
 		spell := Spells{}
 		err = result.Scan(
@@ -66,6 +69,7 @@ func getSpells(db *sql.DB, name string) ([]Spells, error) {
 		}
 		spells = append(spells, spell)
 	}
+
 	return spells, nil
 }
 
@@ -75,10 +79,12 @@ func getWeapons(db *sql.DB, name string) ([]Weapons, error) {
 	if name != "" {
 		query += "WHERE weapons.name = ?"
 	}
+
 	result, err := db.Query(query, name)
 	if err != nil {
 		return nil, err
 	}
+
 	for result.Next() {
 		weapon := Weapons{}
 		err = result.Scan(
@@ -95,6 +101,7 @@ func getWeapons(db *sql.DB, name string) ([]Weapons, error) {
 		}
 		weapons = append(weapons, weapon)
 	}
+
 	return weapons, nil
 }
 
@@ -104,10 +111,12 @@ func getArmors(db *sql.DB, name string) ([]Armors, error) {
 	if name != "" {
 		query += "WHERE armors.name = ?"
 	}
+
 	result, err := db.Query(query, name)
 	if err != nil {
 		return nil, err
 	}
+
 	for result.Next() {
 		armor := Armors{}
 		err = result.Scan(
@@ -124,6 +133,7 @@ func getArmors(db *sql.DB, name string) ([]Armors, error) {
 		}
 		armors = append(armors, armor)
 	}
+
 	return armors, nil
 }
 
@@ -133,11 +143,13 @@ func getRaces(db *sql.DB, name string) ([]Races, error) {
 	if name != "" {
 		query += "WHERE races.name = ?"
 	}
+
 	result, err := db.Query(query, name)
 	if err != nil {
 		fmt.Println(err)
 		return nil, err
 	}
+
 	for result.Next() {
 		race := Races{}
 		err = result.Scan(
@@ -149,6 +161,7 @@ func getRaces(db *sql.DB, name string) ([]Races, error) {
 		}
 		races = append(races, race)
 	}
+
 	return races, nil
 }
 
@@ -158,11 +171,13 @@ func getFeats(db *sql.DB, name string) ([]Feats, error) {
 	if name != "" {
 		query += "WHERE feats.name = ?"
 	}
+
 	result, err := db.Query(query, name)
 	if err != nil {
 		fmt.Println(err)
 		return nil, err
 	}
+
 	for result.Next() {
 		feat := Feats{}
 		err = result.Scan(
@@ -178,6 +193,7 @@ func getFeats(db *sql.DB, name string) ([]Feats, error) {
 		}
 		feats = append(feats, feat)
 	}
+
 	return feats, nil
 }
 
@@ -187,11 +203,13 @@ func getLevels(db *sql.DB, name string) ([]Levels, error) {
 	if name != "" {
 		query += "WHERE levels.name = ?"
 	}
+
 	result, err := db.Query(query, name)
 	if err != nil {
 		fmt.Println(err)
 		return nil, err
 	}
+
 	for result.Next() {
 		level := Levels{}
 		err = result.Scan(
@@ -204,6 +222,7 @@ func getLevels(db *sql.DB, name string) ([]Levels, error) {
 		}
 		levels = append(levels, level)
 	}
+
 	return levels, nil
 }
 
@@ -213,11 +232,13 @@ func getProficiencies(db *sql.DB, name string) ([]Proficiencies, error) {
 	if name != "" {
 		query += "WHERE proficiencies.name = ?"
 	}
+
 	result, err := db.Query(query, name)
 	if err != nil {
 		fmt.Println(err)
 		return nil, err
 	}
+
 	for result.Next() {
 		prof := Proficiencies{}
 		err = result.Scan(
@@ -230,5 +251,6 @@ func getProficiencies(db *sql.DB, name string) ([]Proficiencies, error) {
 		}
 		profs = append(profs, prof)
 	}
+
 	return profs, nil
 }
