@@ -1,6 +1,6 @@
-#Go-Dnd
+#Go-DnD
 
-Dnd 5e API in Go
+DnD 5e API in Go
 
 example query:
 
