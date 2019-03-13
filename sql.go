@@ -113,12 +113,12 @@ func getArmors(db *sql.DB, name string) ([]Armors, error) {
 		err = result.Scan(
 			&armor.ID,
 			&armor.Name,
-			&armor.ArmorClass,
 			&armor.Type,
 			&armor.Cost,
+			&armor.ArmorClass,
 			&armor.Strength,
-			&armor.Weight,
-			&armor.Stealth)
+			&armor.Stealth,
+			&armor.Weight)
 		if err != nil {
 			return nil, err
 		}

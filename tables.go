@@ -53,8 +53,8 @@ type Races struct {
 //Feats struct
 type Feats struct {
 	ID           int    `json:"id"`
-	PreRequisite string `json:"preRequisite"`
 	Name         string `json:"name"`
+	PreRequisite string `json:"preRequisite"`
 	Description  string `json:"description"`
 	Class        int    `json:"class"`
 	Level        int    `json:"level"`
