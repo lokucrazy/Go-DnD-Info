@@ -2,12 +2,13 @@ package main
 
 import (
 	"database/sql"
+	"encoding/json"
 	"fmt"
 
 	_ "github.com/mattn/go-sqlite3"
 )
 
-func get(table, name string) (interface{}, error) {
+func get(table, name string) ([]byte, error) {
 	db, err := sql.Open("sqlite3", "5eInfo.db")
 	if err != nil {
 		return nil, err
@@ -15,8 +16,6 @@ func get(table, name string) (interface{}, error) {
 	defer db.Close()
 	var list interface{}
 	switch table {
-	case "classes":
-		list, err = getClasses(db, name)
 	case "spells":
 		list, err = getSpells(db, name)
 	case "weapons":
@@ -35,32 +34,8 @@ func get(table, name string) (interface{}, error) {
 	if err != nil {
 		return nil, err
 	}
-	return list, nil
-}
 
-func getClasses(db *sql.DB, name string) ([]Classes, error) {
-	var classes []Classes
-	query := "SElECT * FROM classes "
-	if name != "" {
-		query += "WHERE classes.name = ?"
-	}
-	result, err := db.Query(query, name)
-	if err != nil {
-		return nil, err
-	}
-	for result.Next() {
-		class := Classes{}
-		err = result.Scan(
-			&class.ID,
-			&class.Name,
-			&class.HitDie,
-			&class.StartEquipment)
-		if err != nil {
-			return nil, err
-		}
-		classes = append(classes, class)
-	}
-	return classes, nil
+	return json.Marshal(list)
 }
 
 func getSpells(db *sql.DB, name string) ([]Spells, error) {

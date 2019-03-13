@@ -38,7 +38,7 @@ CREATE TABLE armors (
     armorClass TEXT NOT NULL,
     strength TEXT,
     stealth TEXT,
-    weight INTEGER NOT NULL
+    weight TEXT NOT NULL
 );
 
 CREATE TABLE races (

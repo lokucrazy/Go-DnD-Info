@@ -1,77 +1,98 @@
 package main
 
-//Classes Struct
-type Classes struct {
-	ID             int    `json:"id,omitempty"`
-	Name           string `json:"name,omitempty"`
-	HitDie         string `json:"hitDie,omitempty"`
-	StartEquipment string `json:"startEquipment,omitempty"`
-}
+import (
+	"database/sql"
+	"encoding/json"
+	"reflect"
+)
 
 //Spells struct
 type Spells struct {
-	ID          int    `json:"id,omitempty"`
-	Name        string `json:"name,omitempty"`
-	School      string `json:"school,omitempty"`
-	Level       int    `json:"level,omitempty"`
-	Class       int    `json:"class,omitempty"`
-	CastTime    int    `json:"castTime,omitempty"`
-	Range       string `jsong:"range,omitempty"`
-	Components  string `json:"components,omitempty"`
-	Duration    int    `json:"duration,omitempty"`
-	Description string `json:"description,omitempty"`
+	ID          int    `json:"id"`
+	Name        string `json:"name"`
+	School      string `json:"school"`
+	Level       int    `json:"level"`
+	Class       int    `json:"class"`
+	CastTime    int    `json:"castTime"`
+	Range       string `jsong:"range"`
+	Components  string `json:"components"`
+	Duration    int    `json:"duration"`
+	Description string `json:"description"`
 }
 
 //Weapons struct
 type Weapons struct {
-	ID         int    `json:"id,omitempty"`
-	Name       string `json:"name,omitempty"`
-	Damage     string `json:"damage,omitempty"`
-	Type       string `json:"type,omitempty"`
-	Cost       int    `json:"cost,omitempty"`
-	Range      string `json:"range,omitempty"`
-	Weight     int    `json:"weight,omitempty"`
-	Properties string `json:"properties,omitempty"`
+	ID         int        `json:"id"`
+	Name       string     `json:"name"`
+	Damage     NullString `json:"damage"`
+	Type       string     `json:"type"`
+	Cost       string     `json:"cost"`
+	Range      NullString `json:"range"`
+	Weight     NullString `json:"weight"`
+	Properties NullString `json:"properties"`
 }
 
 //Armor struct
 type Armors struct {
-	ID         int    `json:"id,omitempty"`
-	Name       string `json:"name,omitempty"`
-	ArmorClass string `json:"armorClass,omitempty"`
-	Type       string `json:"type,omitempty"`
-	Cost       int    `json:"cost,omitempty"`
-	Strength   string `json:"strength,omitempty"`
-	Weight     int    `json:"weight,omitempty"`
-	Stealth    string `json:"stealth,omitempty"`
-}
-
-//Feats struct
-type Feats struct {
-	ID           int    `json:"id,omitempty"`
-	PreRequisite string `json:"preRequisite,omitempty"`
-	Name         string `json:"name,omitempty"`
-	Description  string `json:"description,omitempty"`
-	Class        int    `json:"class,omitempty"`
-	Level        int    `json:"level,omitempty"`
-}
-
-//Levels struct
-type Levels struct {
-	ID               int `json:"id,omitempty"`
-	ProficiencyBonus int `json:"proficiencyBonus,omitempty"`
-	Class            int `json:"class,omitempty"`
-}
-
-//Proficiencies struct
-type Proficiencies struct {
-	ID    int    `json:"id,omitempty"`
-	Name  string `json:"name,omitempty"`
-	Class int    `json:"class,omitempty"`
+	ID         int        `json:"id"`
+	Name       string     `json:"name"`
+	Type       string     `json:"type"`
+	Cost       string     `json:"cost"`
+	ArmorClass string     `json:"armorClass"`
+	Strength   NullString `json:"strength"`
+	Stealth    NullString `json:"stealth"`
+	Weight     string     `json:"weight"`
 }
 
 //Races struct
 type Races struct {
-	ID   int    `json:"id,omitempty"`
-	Name string `json:"name,omitempty"`
+	ID   int    `json:"id"`
+	Name string `json:"name"`
+}
+
+//Feats struct
+type Feats struct {
+	ID           int    `json:"id"`
+	PreRequisite string `json:"preRequisite"`
+	Name         string `json:"name"`
+	Description  string `json:"description"`
+	Class        int    `json:"class"`
+	Level        int    `json:"level"`
+}
+
+//Levels struct
+type Levels struct {
+	ID               int `json:"id"`
+	ProficiencyBonus int `json:"proficiencyBonus"`
+	Class            int `json:"class"`
+}
+
+//Proficiencies struct
+type Proficiencies struct {
+	ID    int    `json:"id"`
+	Name  string `json:"name"`
+	Class int    `json:"class"`
+}
+
+type NullString sql.NullString
+
+func (ns *NullString) Scan(value interface{}) error {
+	var s sql.NullString
+	if err := s.Scan(value); err != nil {
+		return err
+	}
+
+	if reflect.TypeOf(value) == nil {
+		*ns = NullString{s.String, false}
+	} else {
+		*ns = NullString{s.String, true}
+	}
+	return nil
+}
+
+func (ns *NullString) MarshalJSON() ([]byte, error) {
+	if !ns.Valid {
+		return []byte("null"), nil
+	}
+	return json.Marshal(ns.String)
 }
