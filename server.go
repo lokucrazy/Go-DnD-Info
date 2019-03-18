@@ -13,8 +13,11 @@ import (
 func main() {
 	r := chi.NewRouter()
 	cor := cors.New(cors.Options{
-		AllowedOrigins: []string{"*"},
-		AllowedMethods: []string{"GET"},
+		AllowedOrigins:   []string{"*"},
+		AllowedMethods:   []string{"GET"},
+		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
+		AllowCredentials: true,
+		MaxAge:           300,
 	})
 	r.Use(cor.Handler)
 
