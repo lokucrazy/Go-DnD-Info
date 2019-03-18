@@ -25,12 +25,14 @@ func main() {
 
 		r.Get("/{table}", func(w http.ResponseWriter, r *http.Request) {
 			w.Header().Set("Content-Type", "application/json")
+			w.Header().Set("Access-Control-Allow-Origin", "*")
 			response, err := get(chi.URLParam(r, "table"), "")
 			writeResponse(w, response, err)
 		})
 
 		r.Get("/{table}/{name}", func(w http.ResponseWriter, r *http.Request) {
 			w.Header().Set("Content-Type", "application/json")
+			w.Header().Set("Access-Control-Allow-Origin", "*")
 			name := strings.Replace(chi.URLParam(r, "name"), "_", " ", -1)
 			response, err := get(chi.URLParam(r, "table"), name)
 			writeResponse(w, response, err)
