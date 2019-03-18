@@ -7,10 +7,17 @@ import (
 	"strings"
 
 	"github.com/go-chi/chi"
+	"github.com/go-chi/cors"
 )
 
 func main() {
 	r := chi.NewRouter()
+	cor := cors.New(cors.Options{
+		AllowedOrigins: []string{"*"},
+		AllowedMethods: []string{"GET"},
+	})
+	r.Use(cor.Handler)
+
 	r.Route("/get", func(r chi.Router) {
 
 		r.Get("/{table}", func(w http.ResponseWriter, r *http.Request) {
