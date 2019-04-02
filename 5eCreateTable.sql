@@ -67,10 +67,10 @@ CREATE TABLE proficiencies (
     class INTEGER NOT NULL
 );
 
-INSERT INTO spells VALUES (1,'Blade Ward','Abjuration',0,1,1,'self','V,S',1,'Tracing an arcane sigil in the air, you grant yourself resistance to bludgeoning, piercing, and slashing damage dealt by weapons until the end of your next turn.');
-INSERT INTO races VALUES(1,'Dragonborn');
-INSERT INTO races VALUES(2,'Human');
-INSERT INTO races VALUES(3,'Elf');
+INSERT INTO spells VALUES (1,'blade ward','Abjuration',0,1,1,'self','V,S',1,'Tracing an arcane sigil in the air, you grant yourself resistance to bludgeoning, piercing, and slashing damage dealt by weapons until the end of your next turn.');
+INSERT INTO races VALUES(1,'dragonborn');
+INSERT INTO races VALUES(2,'human');
+INSERT INTO races VALUES(3,'elf');
 
 INSERT INTO armors VALUES(1,'padded','light armor','5 gp','11+dex modifier',null,'disadvantage','8 lb'),
                          (2,'leather','light armor','10 gp','11+dex modifier',null,null,'10 lb'),
