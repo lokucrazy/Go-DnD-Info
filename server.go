@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
+	"strconv"
 	"strings"
 
 	"github.com/go-chi/chi"
@@ -11,6 +13,14 @@ import (
 )
 
 func main() {
+	if len(os.Args) != 2 {
+		log.Fatal("port not provided")
+	}
+	port := os.Args[1]
+	if _, err := strconv.Atoi(port); err != nil {
+		log.Fatal("port must be a valid number")
+	}
+
 	r := chi.NewRouter()
 	cor := cors.New(cors.Options{
 		AllowedOrigins:   []string{"*"},
@@ -37,7 +47,7 @@ func main() {
 		})
 	})
 
-	log.Fatal(http.ListenAndServe(":8080", r))
+	log.Fatal(http.ListenAndServe(":"+port, r))
 }
 
 func writeResponse(w http.ResponseWriter, b []byte, e error) {
