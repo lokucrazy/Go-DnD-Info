@@ -10,7 +10,7 @@ example query:
     
 example response:
 
-    [{
+    {
         "id": 1,
         "name": "club",
         "damage": "1d4 bludgeoning",
@@ -19,7 +19,7 @@ example response:
         "range": null,
         "weight": "2 lb",
         "properties": "light"
-    }]
+    }
 
 you can either not specify a item, and that will send a list of all the items.
 Or you can specify what item you want, and it will send a list of size 1 with that item.
