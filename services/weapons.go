@@ -15,7 +15,8 @@ func (w *weaponsService) Get(name string) ([]byte, error) {
 	if w.DB == nil {
 		return nil, errors.New("db cannot be nil")
 	}
-	var weapons []models.Weapons
+
+	weapons := make([]models.Weapons, 0)
 	query := "SELECT * FROM weapons "
 	if name != "" {
 		query += "WHERE weapons.name = ?"
@@ -44,6 +45,9 @@ func (w *weaponsService) Get(name string) ([]byte, error) {
 		weapons = append(weapons, weapon)
 	}
 
+	if len(weapons) == 1 {
+		return json.Marshal(weapons[0])
+	}
 	return json.Marshal(weapons)
 }
 

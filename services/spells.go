@@ -16,7 +16,7 @@ func (s *spellsService) Get(name string) ([]byte, error) {
 		return nil, errors.New("db cannot be nil")
 	}
 
-	var spells []models.Spells
+	spells := make([]models.Spells, 0)
 	query := "SELECT * FROM spells "
 	if name != "" {
 		query += "WHERE retrievedSpells.name = ?"
@@ -47,6 +47,9 @@ func (s *spellsService) Get(name string) ([]byte, error) {
 		spells = append(spells, spell)
 	}
 
+	if len(spells) == 1 {
+		return json.Marshal(spells[0])
+	}
 	return json.Marshal(spells)
 }
 

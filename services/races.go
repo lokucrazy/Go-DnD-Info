@@ -3,6 +3,7 @@ package services
 import (
 	"database/sql"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"lokucrazy/Go-DnD-Info/models"
 )
@@ -12,7 +13,11 @@ type racesService struct {
 }
 
 func (r *racesService) Get(name string) ([]byte, error) {
-	var races []models.Races
+	if r.DB == nil {
+		return nil, errors.New("db cannot be empty")
+	}
+
+	races := make([]models.Races, 0)
 	query := "SELECT * FROM races "
 	if name != "" {
 		query += "WHERE races.name = ?"
@@ -37,6 +42,9 @@ func (r *racesService) Get(name string) ([]byte, error) {
 		races = append(races, race)
 	}
 
+	if len(races) == 1 {
+		return json.Marshal(races[0])
+	}
 	return json.Marshal(races)
 }
 

@@ -16,7 +16,7 @@ func (a *armorsService) Get(name string) ([]byte, error) {
 		return nil, errors.New("db cannot be nil")
 	}
 
-	var armors []models.Armors
+	armors := make([]models.Armors, 0)
 	query := "SELECT * FROM armors "
 	if name != "" {
 		query += "WHERE armors.name = ?"
@@ -45,6 +45,9 @@ func (a *armorsService) Get(name string) ([]byte, error) {
 		armors = append(armors, armor)
 	}
 
+	if len(armors) == 1 {
+		return json.Marshal(armors[0])
+	}
 	return json.Marshal(armors)
 }
 
