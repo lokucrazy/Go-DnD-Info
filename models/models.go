@@ -1,4 +1,4 @@
-package main
+package models
 
 import (
 	"database/sql"
@@ -14,7 +14,7 @@ type Spells struct {
 	Level       int    `json:"level"`
 	Class       int    `json:"class"`
 	CastTime    int    `json:"castTime"`
-	Range       string `jsong:"range"`
+	Range       string `json:"range"`
 	Components  string `json:"components"`
 	Duration    int    `json:"duration"`
 	Description string `json:"description"`
@@ -22,26 +22,26 @@ type Spells struct {
 
 //Weapons struct
 type Weapons struct {
-	ID         int        `json:"id"`
-	Name       string     `json:"name"`
-	Damage     NullString `json:"damage"`
-	Type       string     `json:"type"`
-	Cost       string     `json:"cost"`
-	Range      NullString `json:"range"`
-	Weight     NullString `json:"weight"`
-	Properties NullString `json:"properties"`
+	ID         int         `json:"id"`
+	Name       string      `json:"name"`
+	Damage     *NullString `json:"damage"`
+	Type       string      `json:"type"`
+	Cost       string      `json:"cost"`
+	Range      *NullString `json:"range"`
+	Weight     *NullString `json:"weight"`
+	Properties *NullString `json:"properties"`
 }
 
 //Armor struct
 type Armors struct {
-	ID         int        `json:"id"`
-	Name       string     `json:"name"`
-	Type       string     `json:"type"`
-	Cost       string     `json:"cost"`
-	ArmorClass string     `json:"armorClass"`
-	Strength   NullString `json:"strength"`
-	Stealth    NullString `json:"stealth"`
-	Weight     string     `json:"weight"`
+	ID         int         `json:"id"`
+	Name       string      `json:"name"`
+	Type       string      `json:"type"`
+	Cost       string      `json:"cost"`
+	ArmorClass string      `json:"armorClass"`
+	Strength   *NullString `json:"strength"`
+	Stealth    *NullString `json:"stealth"`
+	Weight     string      `json:"weight"`
 }
 
 //Races struct
@@ -83,16 +83,16 @@ func (ns *NullString) Scan(value interface{}) error {
 	}
 
 	if reflect.TypeOf(value) == nil {
-		*ns = NullString{s.String, false}
+		*ns = NullString{String: s.String, Valid: false}
 	} else {
-		*ns = NullString{s.String, true}
+		*ns = NullString{String: s.String, Valid: true}
 	}
 	return nil
 }
 
 func (ns *NullString) MarshalJSON() ([]byte, error) {
 	if !ns.Valid {
-		return []byte("null"), nil
+		return nil, nil
 	}
 	return json.Marshal(ns.String)
 }

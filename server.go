@@ -1,15 +1,16 @@
 package main
 
 import (
-	"fmt"
+	"database/sql"
 	"log"
+	"lokucrazy/Go-DnD-Info/controllers"
 	"net/http"
 	"os"
 	"strconv"
-	"strings"
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/cors"
+	_ "github.com/mattn/go-sqlite3"
 )
 
 func main() {
@@ -21,6 +22,12 @@ func main() {
 		log.Fatal("port must be a valid number")
 	}
 
+	db, err := sql.Open("sqlite3", "5eInfo.db")
+	if err != nil {
+		log.Fatalln(err.Error())
+	}
+	defer closeConnection(db)
+
 	r := chi.NewRouter()
 	cor := cors.New(cors.Options{
 		AllowedOrigins:   []string{"*"},
@@ -31,30 +38,20 @@ func main() {
 	})
 	r.Use(cor.Handler)
 
-	r.Route("/get", func(r chi.Router) {
-
-		r.Get("/{table}", func(w http.ResponseWriter, r *http.Request) {
-			w.Header().Set("Content-Type", "application/json")
-			response, err := get(chi.URLParam(r, "table"), "")
-			writeResponse(w, response, err)
-		})
-
-		r.Get("/{table}/{name}", func(w http.ResponseWriter, r *http.Request) {
-			w.Header().Set("Content-Type", "application/json")
-			name := strings.Replace(chi.URLParam(r, "name"), "_", " ", -1)
-			response, err := get(chi.URLParam(r, "table"), name)
-			writeResponse(w, response, err)
-		})
-	})
+	r.Mount("/spells", controllers.CreateRouter(controllers.CreateSpellsController(db)))
+	r.Mount("/weapons", controllers.CreateRouter(controllers.CreateWeaponsController(db)))
+	r.Mount("/armors", controllers.CreateRouter(controllers.CreateArmorsController(db)))
+	r.Mount("/levels", controllers.CreateRouter(controllers.CreateLevelsController(db)))
+	r.Mount("/proficiencies", controllers.CreateRouter(controllers.CreateProficienciesController(db)))
+	r.Mount("/races", controllers.CreateRouter(controllers.CreateRacesController(db)))
+	r.Mount("/feats", controllers.CreateRouter(controllers.CreateFeatsController(db)))
 
 	log.Fatal(http.ListenAndServe(":"+port, r))
 }
 
-func writeResponse(w http.ResponseWriter, b []byte, e error) {
-	if e != nil {
-		http.Error(w, e.Error(), http.StatusInternalServerError)
-	} else {
-		w.WriteHeader(http.StatusOK)
-		fmt.Println(w.Write(b))
+func closeConnection(db *sql.DB) {
+	err := db.Close()
+	if err != nil {
+		log.Fatalln(err.Error())
 	}
 }
