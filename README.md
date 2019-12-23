@@ -4,9 +4,9 @@ DnD 5e API in Go
 
 example query:
 
-    http://url:8080/get/weapons
+    http://url:8080/weapons
     
-    http://url:8080/get/races/human
+    http://url:8080/races/human
     
 example response:
 
